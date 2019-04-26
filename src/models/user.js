@@ -55,6 +55,45 @@ const CartItem = db.define('cartItem', {
     amount: DataTypes.FLOAT
 })
 
+const Post = db.define('post',{
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    title: DataTypes.STRING,
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+  },
+  {
+    freezeTableName: true,
+  }
+);
+
+const Author = db.define('author',{
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING
+  },
+  {
+    freezeTableName: true,
+  }
+);
+
+Author.associate = (models) => {
+  Author.hasMany(models.post);
+};
+
+Post.associate = (models) => {
+    Post.belongsTo(models.author);
+};
+
 CartItem.belongsTo(Product)
 CartItem.belongsTo(User)
 
@@ -65,5 +104,6 @@ exports = module.exports = {
     db,
     Product,
     User,
-    CartItem
+    CartItem,
+    Post
 }
